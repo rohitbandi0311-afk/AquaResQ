@@ -141,6 +141,68 @@ npm run dev
 Open <http://127.0.0.1:5173/>. Keep both terminals running. The backend health
 endpoint is <http://127.0.0.1:8000/health>.
 
+## Public deployment (Render + Vercel)
+
+Deployment is not performed by this repository setup. Create/configure the
+services in your own Render and Vercel accounts, and use the actual service
+URLs shown by those platforms.
+
+### Deploy the FastAPI backend to Render
+
+1. Push this project to a Git provider and connect the repository in Render.
+2. Create a **Blueprint** from the repository root so Render reads
+   [`render.yaml`](./render.yaml).
+3. Confirm the service root is `backend`. The Blueprint installs
+   `backend/requirements.txt`, starts Uvicorn on Render's `$PORT` bound to
+   `0.0.0.0`, and checks `GET /health`.
+4. After Vercel has assigned the frontend URL, set the Render service
+   environment variable `CORS_ORIGINS` to the exact frontend origin(s),
+   comma-separated. Example format only:
+
+   ```text
+   https://<your-vercel-project>.vercel.app
+   ```
+
+   For a custom domain, list its origin too, such as
+   `https://<your-custom-domain>`. Use origins only (scheme + host + optional
+   port), with no paths, credentials, or wildcard. Render's dashboard should
+   prompt for `CORS_ORIGINS` because the Blueprint marks it `sync: false`.
+   Restart/redeploy the backend after setting it.
+5. Verify the service's `/health` endpoint responds with status `healthy`.
+
+When `CORS_ORIGINS` is unset, the backend allows only the two local Vite
+development origins. Production browser origins must be explicitly configured.
+The API enables credentialed CORS, so wildcard origins are rejected.
+
+### Deploy the React/Vite frontend to Vercel
+
+1. Import the same repository into Vercel.
+2. Set the project **Root Directory** to `frontend`. Vercel uses
+   [`frontend/vercel.json`](./frontend/vercel.json), runs `npm ci` and
+   `npm run build`, and serves the `dist` output with an SPA fallback.
+3. In Vercel project settings, add the environment variable
+   `VITE_API_BASE_URL` with the actual Render API origin, for example:
+
+   ```text
+   https://<your-render-service>.onrender.com
+   ```
+
+   Do not include an endpoint path such as `/health`. This value is public
+   frontend configuration and is embedded in the built JavaScript; never put
+   secrets in `VITE_*` variables.
+4. Trigger a Vercel deployment after setting the variable. If you change it
+   later, rebuild/redeploy the frontend.
+5. Add the exact Vercel frontend origin to Render's `CORS_ORIGINS` as
+   described above. Vercel preview URLs may have different origins; add only
+   exact preview origins you intend to permit.
+6. Open the Vercel site, check the API connection, load a simulated demo
+   scenario, and confirm the results. CORS must be configured before browser
+   requests to the Render API will succeed.
+
+`frontend/.env.example` and `backend/.env.example` contain non-secret local
+examples. Do not commit `.env.local` or production credentials. No deployment
+URLs are assumed or supplied here.
+
 ## API
 
 Interactive API reference (when the backend is running):

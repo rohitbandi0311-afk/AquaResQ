@@ -1,4 +1,7 @@
+import os
 from typing import List, Optional
+from urllib.parse import urlsplit
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
@@ -7,6 +10,49 @@ from oxygen_model import Pond
 from risk_engine import analyze_farm
 from optimizer import optimize_allocation
 from demo_scenarios import list_demo_scenarios, run_demo_scenario
+
+DEFAULT_CORS_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+
+def parse_cors_origins(configured_origins: Optional[str]) -> List[str]:
+    if configured_origins is None:
+        return DEFAULT_CORS_ORIGINS.copy()
+
+    origins = []
+    for value in configured_origins.split(","):
+        origin = value.strip().rstrip("/")
+        if not origin:
+            continue
+        parsed = urlsplit(origin)
+        try:
+            parsed.port
+        except ValueError as exc:
+            raise ValueError(
+                "CORS_ORIGINS entries must contain valid HTTP(S) origins"
+            ) from exc
+        if (
+            origin == "*"
+            or parsed.scheme not in {"http", "https"}
+            or not parsed.netloc
+            or not parsed.hostname
+            or any(character.isspace() for character in parsed.netloc)
+            or parsed.path
+            or parsed.query
+            or parsed.fragment
+            or parsed.username
+            or parsed.password
+        ):
+            raise ValueError(
+                "CORS_ORIGINS must be a comma-separated list of HTTP(S) origins "
+                "without paths, credentials, or wildcard entries"
+            )
+        if origin not in origins:
+            origins.append(origin)
+    return origins
+
 
 app = FastAPI(
     title="AquaResQ API",
@@ -18,10 +64,7 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=parse_cors_origins(os.getenv("CORS_ORIGINS")),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

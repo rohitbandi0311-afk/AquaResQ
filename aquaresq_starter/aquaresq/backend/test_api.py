@@ -1,6 +1,6 @@
 import unittest
 from fastapi.testclient import TestClient
-from main import app
+from main import app, parse_cors_origins
 from oxygen_model import Pond, simulate_pond
 from risk_engine import classify_risk
 
@@ -8,6 +8,33 @@ client = TestClient(app)
 
 
 class ApiTests(unittest.TestCase):
+    def test_cors_origins_default_to_local_development_origins(self):
+        self.assertEqual(
+            parse_cors_origins(None),
+            ["http://localhost:5173", "http://127.0.0.1:5173"],
+        )
+
+    def test_cors_origins_accept_exact_configured_production_origins(self):
+        self.assertEqual(
+            parse_cors_origins(
+                " https://aqua.example,https://farm.example/,https://aqua.example "
+            ),
+            ["https://aqua.example", "https://farm.example"],
+        )
+
+    def test_cors_origins_reject_wildcards_credentials_and_paths(self):
+        for configured in (
+            "*",
+            "https://user:password@example.com",
+            "https://example.com/dashboard",
+            "ftp://example.com",
+            "https://example.com:not-a-port",
+            "https://bad host.example",
+        ):
+            with self.subTest(configured=configured):
+                with self.assertRaises(ValueError):
+                    parse_cors_origins(configured)
+
     def test_health(self):
         response = client.get("/health")
         self.assertEqual(response.status_code, 200)
