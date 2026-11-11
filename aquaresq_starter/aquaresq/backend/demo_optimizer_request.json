@@ -1,0 +1,54 @@
+{
+  "classification": "SIMULATED - illustrative planning inputs, not farm or sensor measurements",
+  "request": {
+    "ponds": [
+      {
+        "pond_id": "DEMO-POND-1",
+        "area_m2": 5000,
+        "average_depth_m": 1.2,
+        "initial_do_mg_l": 3.8,
+        "biomass_kg": 1800,
+        "water_column_demand_mg_l_h": 0.12,
+        "sediment_demand_mg_l_h": 0.1,
+        "shrimp_respiration_mg_kg_h": 0.5,
+        "reaeration_per_h": 0.05,
+        "saturation_do_mg_l": 7.0,
+        "aeration_addition_mg_l_h": 0.5,
+        "aerator_load_kw": 2.0
+      },
+      {
+        "pond_id": "DEMO-POND-2",
+        "area_m2": 6500,
+        "average_depth_m": 1.3,
+        "initial_do_mg_l": 4.2,
+        "biomass_kg": 2100,
+        "water_column_demand_mg_l_h": 0.14,
+        "sediment_demand_mg_l_h": 0.12,
+        "shrimp_respiration_mg_kg_h": 0.5,
+        "reaeration_per_h": 0.05,
+        "saturation_do_mg_l": 7.0,
+        "aeration_addition_mg_l_h": 0.5,
+        "aerator_load_kw": 2.0
+      },
+      {
+        "pond_id": "DEMO-POND-3",
+        "area_m2": 4200,
+        "average_depth_m": 1.1,
+        "initial_do_mg_l": 4.6,
+        "biomass_kg": 1600,
+        "water_column_demand_mg_l_h": 0.16,
+        "sediment_demand_mg_l_h": 0.13,
+        "shrimp_respiration_mg_kg_h": 0.5,
+        "reaeration_per_h": 0.05,
+        "saturation_do_mg_l": 7.0,
+        "aeration_addition_mg_l_h": 0.5,
+        "aerator_load_kw": 2.0
+      }
+    ],
+    "generator_capacity_kw": 4.0,
+    "outage_hours": 12.0,
+    "target_do_mg_l": 4.0,
+    "time_step_minutes": 5,
+    "available_energy_kwh": 48.0
+  }
+}
