@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.png" alt="AquaResQ: plan backup power for multi-pond shrimp farms" width="100%">
+  <img src="banner.png" alt="AquaResQ: plan backup power for multi-pond shrimp farms" width="100%">
 </p>
 
 <h1 align="center">AquaResQ</h1>
@@ -37,7 +37,7 @@ Shrimp ponds depend on aerators to keep dissolved oxygen (DO) up, and aerators r
 3. It **checks every combination** of aerator allocations against power and fuel limits.
 4. It **compares three strategies** on identical inputs and explains the result, including the trade-offs.
 
-<p align="center"><img src="docs/images/workflow.png" alt="AquaResQ planning workflow" width="92%"></p>
+<p align="center"><img src="workflow.png" alt="AquaResQ planning workflow" width="92%"></p>
 
 ### Features
 
@@ -54,15 +54,15 @@ Shrimp ponds depend on aerators to keep dissolved oxygen (DO) up, and aerators r
 
 | Farm overview | Pond management |
 |---|---|
-| <img src="docs/images/overview.png" alt="Farm overview"> | <img src="docs/images/ponds.png" alt="Pond management"> |
+| <img src="overview.png" alt="Farm overview"> | <img src="ponds.png" alt="Pond management"> |
 
 | Power and backup | Generator limits |
 |---|---|
-| <img src="docs/images/power-and-backup.png" alt="Power and backup"> | <img src="docs/images/generator-limits.png" alt="Generator limits"> |
+| <img src="power-and-backup.png" alt="Power and backup"> | <img src="generator-limits.png" alt="Generator limits"> |
 
 | Strategy comparison | Final generator plan |
 |---|---|
-| <img src="docs/images/strategy-comparison.png" alt="Strategy comparison"> | <img src="docs/images/generator-plan.png" alt="Final generator plan"> |
+| <img src="strategy-comparison.png" alt="Strategy comparison"> | <img src="generator-plan.png" alt="Final generator plan"> |
 
 ## Example result (simulated critical scenario)
 
@@ -95,11 +95,11 @@ $$\frac{dC}{dt} = P + K\,(C_s - C) + S - Q_w - Q_s - Q_r$$
 
 The code applies the exact solution of this linear equation at each step. Parameter defaults are illustrative placeholders, not field-calibrated values. See [`MODEL_ASSUMPTIONS.md`](aquaresq_starter/aquaresq/MODEL_ASSUMPTIONS.md), [`MODEL_LIMITATIONS.md`](aquaresq_starter/aquaresq/MODEL_LIMITATIONS.md) and [`SCIENTIFIC_AUDIT.md`](aquaresq_starter/aquaresq/SCIENTIFIC_AUDIT.md).
 
-<p align="center"><img src="docs/images/oxygen-model-example.png" alt="Worked oxygen example" width="92%"></p>
+<p align="center"><img src="oxygen-model-example.png" alt="Worked oxygen example" width="92%"></p>
 
 ## Architecture
 
-<p align="center"><img src="docs/images/architecture.png" alt="AquaResQ architecture" width="96%"></p>
+<p align="center"><img src="architecture.png" alt="AquaResQ architecture" width="96%"></p>
 
 | Layer | Technology |
 |---|---|
